@@ -1,9 +1,5 @@
 let form = document.getElementById('my-form');
 form.addEventListener('submit' , onSubmit);
-//array for storing users
-let users=[];
-//variable to keep a count of number of users
-let i=0;
 const list =document.getElementById('user-list');
 list.addEventListener('click',change);
 
@@ -19,7 +15,17 @@ function onSubmit(e){
         userEmail : e.target.email.value,
         userPhone : e.target.phone.value
     };
-    users.push(userData);
+    
+
+    // localStorage.setItem(e.target.email.value,JSON.stringify(userData));
+    // showDetails(userData);
+
+    axios.post('https://crudcrud.com/api/8ee01fcfa20e4e768d5dc383d7906a00/appointmentData',userData)
+    .then((res) => showDetails(res.data))
+    .catch((err)=> console.err(err));
+   
+}
+function showDetails(userData){
     let info = userData.userName +' - '+userData.userEmail+' - '+userData.userPhone;
     let newLi = document.createElement('li');
     //delete button
@@ -39,19 +45,12 @@ function onSubmit(e){
     newLi.appendChild(editBtn);
     list.appendChild(newLi);
 
-    localStorage.setItem(e.target.email.value,JSON.stringify(users[i]));
-    i++;
-    //console.log(users);
-    //JSON.parse - to revert back to object form
-    e.target.name.value='';
-    e.target.email.value='';
-    e.target.phone.value='';
-    console.log(i);
+    form.reset();
 }
 function change(e){
     var li = e.target.parentElement;
     let arr = li.childNodes[0].textContent.split(' - ');
-    i--;
+    
     if(e.target.classList.contains('delete')){
         if(confirm('Are you sure to delete?')){
             list.removeChild(li);
