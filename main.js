@@ -53,8 +53,9 @@ function showDetails(userData){
     newLi.appendChild(document.createTextNode(info));
     newLi.appendChild(btn);
     newLi.appendChild(editBtn);
+    newLi.id = userData._id;
     list.appendChild(newLi);
-
+    
     form.reset();
 }
 
@@ -63,11 +64,14 @@ function showDetails(userData){
 function change(e){
     var li = e.target.parentElement;
     let arr = li.childNodes[0].textContent.split(' - ');
-    
+    let user_id = li.id;
     if(e.target.classList.contains('delete')){
         if(confirm('Are you sure to delete?')){
+            //deleting using id
             list.removeChild(li);
-            localStorage.removeItem(arr[1]);
+            axios.delete("https://crudcrud.com/api/8ee01fcfa20e4e768d5dc383d7906a00/appointmentData/"+user_id)
+            .then(res => console.log(res))
+            .catch((err)=> console.log(err));
         }
     }
     if(e.target.classList.contains('edit')){
