@@ -25,6 +25,16 @@ function onSubmit(e){
     .catch((err)=> console.err(err));
    
 }
+window.addEventListener("DOMContentLoaded",()=>{
+    axios.get("https://crudcrud.com/api/8ee01fcfa20e4e768d5dc383d7906a00/appointmentData")
+    .then ((res) =>{
+        for(let i=0;i<res.data.length;i++){
+            showDetails(res.data[i])
+        }
+    })
+    .catch((err)=> console.log(err));
+})
+
 function showDetails(userData){
     let info = userData.userName +' - '+userData.userEmail+' - '+userData.userPhone;
     let newLi = document.createElement('li');
@@ -47,6 +57,9 @@ function showDetails(userData){
 
     form.reset();
 }
+
+
+
 function change(e){
     var li = e.target.parentElement;
     let arr = li.childNodes[0].textContent.split(' - ');
